@@ -11,20 +11,34 @@ import { StaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
 import Header from './header'
 import { version } from '../../package'
-import colors from '../utils/colors'
+import { themes } from '../utils/colors'
 import './layout.css'
 
+const theme = themes.teal
+
 const Footer = styled.footer`
-  background-color: ${colors.dust_storm};
-  padding: 0.2em;
+  font-family: 'Roboto', sans-serif;
+  background-color: ${theme.primary.main};
+  padding: 0.5rem;
   text-align: center;
   color: #404040;
   font-size: 0.9em;
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
+  div#built-with {
+    font-size: 0.8em;
+  }
+`
+const Version = styled.span`
+  font-weight: 700;
 `
 
 const Main = styled.main`
-  padding: 1rem 1rem 1.4rem;
-  background-color: white;
+  padding: 72px 1rem 72px;
+  background-color: ${theme.secondary.main};
+  height: 100%;
 `
 
 const Layout = ({ children }) => (
@@ -41,26 +55,18 @@ const Layout = ({ children }) => (
     render={data => (
       <>
         <Header siteTitle={data.site.siteMetadata.title} />
-        <div
-          style={{
-            margin: `0 auto`,
-            maxWidth: 960,
-            // padding: `0px 1.0875rem 1.45rem`,
-            paddingTop: 0,
-          }}
-        >
-          <Main>{children}</Main>
-          <Footer>
-            <div>
-              Version {version} by Thomas Malt © {new Date().getFullYear()}
-            </div>
-            <div>
-              Built with
-              {` `}
-              <a href="https://www.gatsbyjs.org">Gatsby</a>
-            </div>
-          </Footer>
-        </div>
+        <Main>{children}</Main>
+        <Footer>
+          <div>
+            Version <Version>{version}</Version> by Thomas Malt ©{' '}
+            {new Date().getFullYear()}
+          </div>
+          <div id="built-with">
+            Built with
+            {` `}
+            <a href="https://www.gatsbyjs.org">Gatsby</a>
+          </div>
+        </Footer>
       </>
     )}
   />

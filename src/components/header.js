@@ -2,11 +2,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import colors from '../utils/colors'
+import { themes } from '../utils/colors'
+
+const theme = themes.teal
 
 const MyHeader = styled.header`
-  background-color: ${colors.dust_storm};
+  background-color: ${theme.primary.main};
   color: black;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 `
 const Title = styled.h1`
   color: rgba(0, 0, 0, 0.66);

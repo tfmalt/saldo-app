@@ -2,46 +2,73 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { urls } from '../utils/settings'
 import styled from 'styled-components'
-import colors from '../utils/colors'
+import { themes } from '../utils/colors'
+
+const theme = themes.teal
 
 const List = styled.ul`
   margin: 0;
   padding: 0;
   list-style: none;
-  min-height: 60vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
 `
 const Item = styled.li`
   margin: 1.4em 0;
   padding: 0.5em;
   text-align: center;
-  min-width: 280px;
-  border: 1px solid ${colors.dust_storm};
+  width: 80vw;
+  height: 80vw;
+  // max-width: 520px;
+  // max-height: 520px;
+  background-color: ${theme.secondary.light};
+  // border: 1px solid ${theme.secondary.dark};
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 30px rgb(255,255,255);
 `
 
 const Name = styled.h3`
-  font-size: 1.2em;
+  font-size: 6vw;
   font-weight: normal;
-  margin: 0 0 0.5em 0;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  margin: 4vw 0 0 0;
   padding: 0;
-  color: ${colors.silver_lake_blue};
+  color: ${theme.primary.text};
 `
 
 const Available = styled.div`
-  font-size: 3em;
+  font-size: 13vw;
+  height: 100%;
   text-align: center;
-
+  display: inline-block;
+  font-family: 'Sigmar One';
+  color: ${theme.primary.dark};
+  padding: 4vw 0;
   span {
-    font-size: 0.6em;
+    font-size: 0.5em;
+    color: ${theme.primary.main};
   }
 `
 
 const BalanceDiv = styled.div`
-  margin-top: 0.4em;
+  font-size: 6vw;
+  margin: 0 0 0 0;
   text-align: center;
+  color: #404040;
+  font-family: 'Sigmar One';
+  color: ${theme.secondary.dark};
+
+  span {
+    font-size: 0.66em;
+    color: ${theme.secondary.dark};
+  }
 `
 
 class Balance extends React.Component {
@@ -71,21 +98,23 @@ class Balance extends React.Component {
     }
 
     return (
-      <div>
-        <List>
-          {this.state.accounts.map(item => (
-            <Item key={item.accountId}>
+      <List>
+        {this.state.accounts.map(item => (
+          <Item key={item.accountId}>
+            <div>
               <Name>{item.name}</Name>
               <Available>
-                <span>kr</span> {item.available.toFixed(2)}
+                <span>kr </span>
+                {item.available.toFixed(2)}
               </Available>
               <BalanceDiv>
-                <span>kr</span> {item.balance.toFixed(2)}
+                <span>kr </span>
+                {item.balance.toFixed(2)}
               </BalanceDiv>
-            </Item>
-          ))}
-        </List>
-      </div>
+            </div>
+          </Item>
+        ))}
+      </List>
     )
   }
 

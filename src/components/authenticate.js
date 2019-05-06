@@ -1,18 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
-import colors from '../utils/colors'
+import { themes } from '../utils/colors'
 import { urls } from '../utils/settings'
 import { navigate } from 'gatsby'
 
+const theme = themes.teal
+
 const Heading = styled.h1`
   font-size: 18px;
-  color: ${colors.silver_lake_blue};
+  color: ${theme.primary.main};
 `
 const Wrapper = styled.div`
   min-height: 66vh;
 `
 const Button = styled.button`
-  background-color: ${colors.silver_lake_blue};
+  background-color: ${theme.primary.main};
   color: white;
   width: 100%;
   text-align: center;
@@ -23,11 +25,11 @@ const Button = styled.button`
 `
 
 const TextField = styled.div`
-  border-bottom: 1px solid ${colors.silver_lake_blue};
+  border-bottom: 1px solid ${theme.primary.main};
   margin-bottom: 0.6em;
 
   &:focus {
-    border-bottom: 3px solid ${colors.silver_lake_blue};
+    border-bottom: 3px solid ${theme.primary.main};
   }
 
   label {
@@ -36,11 +38,11 @@ const TextField = styled.div`
     display: inline-block;
     font-family: sans-serif;
     font-size: 0.9em;
-    color: ${colors.silver_lake_blue};
+    color: ${theme.primary.main};
   }
   input {
     border: none;
-    background-color: ${colors.cosmic_latte};
+    background-color: ${theme.primary.main};
     border-radius: 4px 4px 0 0;
   }
 

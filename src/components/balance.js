@@ -16,7 +16,7 @@ const List = styled.ul`
 `
 const Item = styled.li`
   margin: 1.4em 0;
-  padding: 0.33em;
+  padding: 0.5em;
   text-align: center;
   min-width: 280px;
   border: 1px solid ${colors.dust_storm};
@@ -58,7 +58,11 @@ class Balance extends React.Component {
     console.log('state:', this.state)
     this.fetcAccounts = this.fetchAccounts.bind(this)
 
-    if (auth.success) this.fetchAccounts()
+    // if (auth.success) this.fetchAccounts()
+  }
+
+  componentDidMount() {
+    if (this.state.isAuthenticated) this.fetchAccounts()
   }
 
   render() {

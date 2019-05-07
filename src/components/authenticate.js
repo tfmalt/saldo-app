@@ -65,7 +65,10 @@ class Authenticate extends React.Component {
   constructor(props) {
     super(props)
 
-    const auth = JSON.parse(localStorage.getItem('sd60:authenticate'))
+    const auth =
+      typeof window === 'undefined'
+        ? { userId: '', seret: '' }
+        : JSON.parse(localStorage.getItem('sd60:authenticate'))
 
     this.state = {
       userId: auth.userId || '',
@@ -113,15 +116,17 @@ class Authenticate extends React.Component {
         }
 
         json.date = new Date()
-        localStorage.setItem('sd60:token', JSON.stringify(json))
-        localStorage.setItem(
-          'sd60:authenticate',
-          JSON.stringify({
-            success: true,
-            userId: this.state.userId,
-            secret: this.state.secret,
-          })
-        )
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('sd60:token', JSON.stringify(json))
+          localStorage.setItem(
+            'sd60:authenticate',
+            JSON.stringify({
+              success: true,
+              userId: this.state.userId,
+              secret: this.state.secret,
+            })
+          )
+        }
         return navigate('/')
       })
       .catch(err => console.warn(err))

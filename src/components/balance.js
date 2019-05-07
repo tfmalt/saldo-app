@@ -75,7 +75,10 @@ const BalanceDiv = styled.div`
 class Balance extends React.Component {
   constructor(props) {
     super(props)
-    const auth = JSON.parse(localStorage.getItem('sd60:authenticate'))
+    const auth =
+      typeof window === 'undefined'
+        ? { isAuthenticated: false, userId: '', secret: '' }
+        : JSON.parse(localStorage.getItem('sd60:authenticate'))
 
     this.state = {
       isAuthenticated: auth.success,

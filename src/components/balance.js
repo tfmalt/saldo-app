@@ -37,29 +37,30 @@ const Name = styled.h3`
   font-size: 6vw;
   font-weight: normal;
   font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  margin: 4vw 0 0 0;
+  font-weight: 700;
+  margin: 12px 0 18px 0;
   padding: 0;
-  color: ${theme.primary.text};
+  color: ${theme.secondary.dark}; // rgba(0, 0, 0, 0.4);
 `
 
 const Available = styled.div`
-  font-size: 13vw;
+  font-size: 14vw;
   height: 100%;
   text-align: center;
   display: inline-block;
+  // font-family: 'Fredericka the Great';
   font-family: 'Sigmar One';
   color: ${theme.primary.dark};
   padding: 4vw 0;
   span {
-    font-size: 0.5em;
-    color: ${theme.primary.main};
+    font-size: 0.6em;
+    // color: ${theme.primary.main};
   }
 `
 
 const BalanceDiv = styled.div`
   font-size: 6vw;
-  margin: 0 0 0 0;
+  margin: 18px 0 12px 0;
   text-align: center;
   color: #404040;
   font-family: 'Sigmar One';

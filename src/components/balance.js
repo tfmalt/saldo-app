@@ -93,14 +93,14 @@ class Balance extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.isAuthenticated) this.fetchAccounts()
-  }
-
-  render() {
     if (this.state.isAuthenticated === false) {
       navigate('/authenticate')
     }
 
+    if (this.state.isAuthenticated) this.fetchAccounts()
+  }
+
+  render() {
     return (
       <List>
         {this.state.accounts.map(item => (

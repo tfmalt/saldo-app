@@ -15,6 +15,7 @@
     "gatsby-plugin-styled-components": "^3.0.7",
     "gatsby-source-filesystem": "^2.0.33",
     "gatsby-transformer-sharp": "^2.1.19",
+    "gh-pages": "^2.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -26,11 +27,16 @@
     "prettier": "^1.17.0"
   },
   "keywords": [
-    "gatsby", "Progressive Web App", "PWA", "Banking", "API"
+    "gatsby",
+    "Progressive Web App",
+    "PWA",
+    "Banking",
+    "API"
   ],
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
+    "deploy": "gatsby build && gh-pages -d public",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
     "start": "npm run develop",

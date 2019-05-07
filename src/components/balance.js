@@ -77,13 +77,13 @@ class Balance extends React.Component {
     super(props)
     const auth =
       typeof window === 'undefined'
-        ? { isAuthenticated: false, userId: '', secret: '' }
+        ? { success: false, userId: '', secret: '' }
         : JSON.parse(localStorage.getItem('sd60:authenticate'))
 
     this.state = {
-      isAuthenticated: auth.success,
-      userId: auth.userId,
-      secret: auth.secret,
+      isAuthenticated: auth.success || false,
+      userId: auth.userId || '',
+      secret: auth.secret || '',
       accounts: [],
     }
     console.log('state:', this.state)

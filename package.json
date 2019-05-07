@@ -2,7 +2,7 @@
   "name": "sd60-saldo-app",
   "private": true,
   "description": "A progressive web app to see the balance of your banking account",
-  "version": "0.2.4",
+  "version": "0.3.1",
   "author": "Thomas Malt <thomas@malt.no>",
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.0",
@@ -26,7 +26,7 @@
     "prettier": "^1.17.0"
   },
   "keywords": [
-    "gatsby"
+    "gatsby", "Progressive Web App", "PWA", "Banking", "API"
   ],
   "license": "MIT",
   "scripts": {
@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/tfmalt/saldo-app.git"
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"

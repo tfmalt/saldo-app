@@ -67,12 +67,12 @@ class Authenticate extends React.Component {
 
     const auth =
       typeof window === 'undefined'
-        ? { userId: '', seret: '' }
+        ? { userId: '', secret: '' }
         : JSON.parse(localStorage.getItem('sd60:authenticate'))
 
     this.state = {
-      userId: auth.userId || '',
-      secret: auth.secret || '',
+      userId: auth === null ? '' : auth.userId,
+      secret: auth === null ? '' : auth.secret,
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)

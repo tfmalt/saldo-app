@@ -21,10 +21,10 @@ const Title = styled.h1`
   padding: 0.8em;
 `
 
-const Header = ({ siteTitle }) => (
+const Header = ({ headerTitle }) => (
   <MyHeader>
     <div>
-      <Title>{siteTitle}</Title>
+      <Title>{headerTitle}</Title>
     </div>
   </MyHeader>
 )

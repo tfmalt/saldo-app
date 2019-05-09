@@ -7,7 +7,6 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StaticQuery, graphql } from 'gatsby'
 import styled from 'styled-components'
 import Header from './header'
 import { version } from '../../package'
@@ -36,25 +35,17 @@ const Version = styled.span`
 `
 
 const Main = styled.main`
-  padding: 72px 1rem 72px;
+  padding: 14vh 6vw;
   background-color: ${theme.secondary.main};
   height: 100%;
 `
 
-const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
-          }
-        }
-      }
-    `}
-    render={data => (
+class Layout extends React.Component {
+  render() {
+    const { headerTitle, children } = this.props
+    return (
       <>
-        <Header siteTitle={data.site.siteMetadata.title} />
+        <Header headerTitle={headerTitle} />
         <Main>{children}</Main>
         <Footer>
           <div>
@@ -68,9 +59,9 @@ const Layout = ({ children }) => (
           </div>
         </Footer>
       </>
-    )}
-  />
-)
+    )
+  }
+}
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

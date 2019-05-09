@@ -4,7 +4,7 @@ import SEO from '../components/seo'
 import Authenticate from '../components/authenticate'
 
 const AuthenticatePage = () => (
-  <Layout>
+  <Layout headerTitle="Saldo - Logg inn">
     <SEO title="Authenticate" />
     <Authenticate />
   </Layout>

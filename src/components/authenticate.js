@@ -6,61 +6,6 @@ import { navigate } from 'gatsby'
 
 const theme = themes.teal
 
-const Heading = styled.h1`
-  font-size: 18px;
-  color: ${theme.primary.main};
-`
-const Wrapper = styled.div`
-  min-height: 66vh;
-`
-const Button = styled.button`
-  background-color: ${theme.primary.main};
-  color: white;
-  width: 100%;
-  text-align: center;
-  border: none;
-  padding: 0.8em;
-  margin-top: 1.6em;
-  border-radius: 4px;
-`
-
-const TextField = styled.div`
-  border-bottom: 1px solid ${theme.primary.main};
-  margin-bottom: 0.6em;
-
-  &:focus {
-    border-bottom: 3px solid ${theme.primary.main};
-  }
-
-  label {
-    padding-left: 0px;
-    padding-top: 2px;
-    display: inline-block;
-    font-family: sans-serif;
-    font-size: 0.9em;
-    color: ${theme.primary.main};
-  }
-  input {
-    border: none;
-    background-color: ${theme.primary.main};
-    border-radius: 4px 4px 0 0;
-  }
-
-  input:focus {
-    border: 0;
-    border-color: white;
-  }
-
-  input[type='text'] {
-    border: none;
-    padding: 0.8em 0.6em;
-    font-size: 1em;
-    width: 100%;
-  }
-`
-
-const Form = styled.form``
-
 class Authenticate extends React.Component {
   constructor(props) {
     super(props)
@@ -141,25 +86,28 @@ class Authenticate extends React.Component {
   render() {
     return (
       <Wrapper>
-        <Heading>Authenticate</Heading>
         <Form onSubmit={this.handleSubmit}>
           <TextField>
-            <label>Bruker Id</label>
             <input
-              type="text"
+              type="email"
+              required
               value={this.state.userId}
               onChange={this.handleChange}
               id="userId"
             />
+            <Underline />
+            <label>Bruker id</label>
           </TextField>
           <TextField>
-            <label>Passord</label>
             <input
               type="text"
+              required
               value={this.state.secret}
               onChange={this.handleChange}
               id="secret"
             />
+            <Underline />
+            <label>Passord</label>
           </TextField>
           <Button type="submit" id="authenticate">
             Logg inn
@@ -170,3 +118,82 @@ class Authenticate extends React.Component {
   }
 }
 export default Authenticate
+
+const Wrapper = styled.div`
+  min-height: 72vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`
+const Button = styled.button`
+  background-color: ${theme.secondary.dark};
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 1.2em;
+  color: black;
+  width: 100%;
+  text-align: center;
+  border: none;
+  padding: 0.8em;
+  margin-top: 6vh;
+  border-radius: 4px;
+  height: 72px;
+`
+
+const Underline = styled.div`
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 2px;
+  background-color: none;
+`
+
+const TextField = styled.div`
+  margin-bottom: 3vh;
+  position: relative;
+
+  label {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 1.2em;
+    color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    left: 12px;
+    top: 1.3em;
+  }
+  input:focus {
+    outline: none;
+  }
+  input:focus ~ label,
+  input:valid ~ label {
+    top: 5px;
+    font-size: 0.9em;
+    color: ${theme.primary.main};
+    font-weight: 500;
+    transition: 0.2s ease all;
+  }
+
+  input:focus ~ div {
+    background-color: ${theme.primary.main};
+    transition: 0.2s ease all;
+  }
+
+  input {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    height: 72px;
+    background-color: ${theme.secondary.light};
+    font-family: 'Roboto';
+    border-bottom: 1px solid ${theme.primary.main};
+    border-radius: 4px 4px 0 0;
+    display: block;
+    padding: 24px 12px 2px;
+    font-size: 1.2em;
+    width: 100%;
+  }
+`
+
+const Form = styled.form`
+  margin: 0;
+`

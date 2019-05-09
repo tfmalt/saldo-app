@@ -3,30 +3,57 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import { themes } from '../utils/colors'
+import Icon from '../components/Icon'
 
 const theme = themes.teal
 
 const MyHeader = styled.header`
   background-color: ${theme.primary.main};
   color: black;
-  position: fixed;
   top: 0px;
   width: 100%;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
-`
-const Title = styled.h1`
-  color: rgba(0, 0, 0, 0.66);
-  text-decoration: none;
-  font-size: 1.4em;
-  padding: 0.8em;
+  height: 72px;
+  position: fixed;
+
+  div {
+    display: flex;
+    flex-direction: row;
+    padding: 15px 12px;
+  }
+
+  & > * {
+    margin-right: 12px;
+  }
 `
 
+const Title = styled.h1`
+  text-decoration: none;
+  font-size: 1.2em;
+  display: inline-block;
+  padding-top: 8px;
+  padding-left: 32px;
+`
+
+const MainMenu = styled.div`
+  position: absolute;
+  top: 0px;
+  left: -30vw;
+  height: 100vh;
+  width: 30vw;
+  background-color: ${theme.secondary.dark};
+  z-index: 100;
+`
+// <Title>{headerTitle}</Title>
 const Header = ({ headerTitle }) => (
-  <MyHeader>
-    <div>
-      <Title>{headerTitle}</Title>
-    </div>
-  </MyHeader>
+  <>
+    <MyHeader>
+      <div>
+        <Icon name="menu" />
+        <Title>{headerTitle}</Title>
+      </div>
+    </MyHeader>
+    <MainMenu>Hello</MainMenu>
+  </>
 )
 
 Header.propTypes = {

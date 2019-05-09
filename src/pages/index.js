@@ -5,7 +5,7 @@ import SEO from '../components/seo'
 import Balance from '../components/balance'
 
 const IndexPage = () => (
-  <Layout>
+  <Layout headerTitle="Saldo - Again">
     <SEO title="Home" keywords={[`gatsby`, `open banking`, `react`]} />
     <Balance />
   </Layout>

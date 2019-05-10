@@ -1,0 +1,8 @@
+.main-menu-closed {
+  left: -66vw;
+  width: 66vw;
+}
+
+.main-menu-open {
+  left: 0vw;
+}

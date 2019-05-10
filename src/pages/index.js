@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Layout from '../components/layout'
-import SEO from '../components/seo'
-import Balance from '../components/balance'
+import Layout from '../components/Layout'
+import SEO from '../components/SEO'
+import Balance from '../components/Balance'
 
 const IndexPage = () => (
   <Layout headerTitle="Saldo - Again">

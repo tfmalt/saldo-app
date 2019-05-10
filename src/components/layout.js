@@ -8,7 +8,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import Header from './header'
+import Header from '../components/Header'
 import { version } from '../../package'
 import { themes } from '../utils/colors'
 import './layout.css'

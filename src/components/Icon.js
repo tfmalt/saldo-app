@@ -1,6 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
-import css from './Icon.module.css'
+
+const Icon = ({ name, trigger }) => {
+  console.log('icon:', name, trigger)
+  return (
+    <IconButton onClick={trigger}>
+      <i>{name}</i>
+    </IconButton>
+  )
+}
+
+export default Icon
 
 const IconButton = styled.button`
   display: inline-block;
@@ -46,25 +56,3 @@ const IconButton = styled.button`
     font-feature-settings: 'liga';
   }
 `
-
-class Icon extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.props.className = 'test'
-  }
-
-  openMenu(event) {
-    alert('menu open')
-  }
-  render() {
-    const { name, className } = this.props
-    return (
-      <IconButton className={className} onClick={this.openMenu}>
-        <i>{name}</i>
-      </IconButton>
-    )
-  }
-}
-
-export default Icon

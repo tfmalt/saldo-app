@@ -3,9 +3,52 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import { themes } from '../utils/colors'
-import Icon from '../components/Icon'
+import Icon from './Icon'
 
 const theme = themes.teal
+
+// <Title>{headerTitle}</Title>
+class Header extends React.Component {
+  constructor(props) {
+    super(props)
+
+    console.log('header constructor')
+    this.state = {
+      mainMenu: 'main-menu-closed',
+    }
+
+    this.openMenu = this.openMenu.bind(this)
+  }
+
+  openMenu = event => {
+    console.log('open menu:', event)
+  }
+
+  render() {
+    const { headerTitle } = this.props
+    return (
+      <>
+        <MyHeader>
+          <div>
+            <Icon name="menu" trigger={this.openMenu} />
+            <Title>{headerTitle}</Title>
+          </div>
+        </MyHeader>
+        <MainMenu className={this.state.mainMenu}>Hello</MainMenu>
+      </>
+    )
+  }
+}
+
+Header.propTypes = {
+  siteTitle: PropTypes.string,
+}
+
+Header.defaultProps = {
+  siteTitle: ``,
+}
+
+export default Header
 
 const MyHeader = styled.header`
   background-color: ${theme.primary.main};
@@ -36,32 +79,8 @@ const Title = styled.h1`
 
 const MainMenu = styled.div`
   position: absolute;
-  top: 0px;
-  left: -30vw;
-  height: 100vh;
-  width: 30vw;
-  background-color: ${theme.secondary.dark};
   z-index: 100;
+  top: 0px;
+  height: 100vh;
+  background-color: ${theme.secondary.dark};
 `
-// <Title>{headerTitle}</Title>
-const Header = ({ headerTitle }) => (
-  <>
-    <MyHeader>
-      <div>
-        <Icon name="menu" />
-        <Title>{headerTitle}</Title>
-      </div>
-    </MyHeader>
-    <MainMenu>Hello</MainMenu>
-  </>
-)
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
-Header.defaultProps = {
-  siteTitle: ``,
-}
-
-export default Header

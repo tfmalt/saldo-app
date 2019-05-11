@@ -1,7 +1,6 @@
 import React from 'react'
 import { navigate } from 'gatsby'
 import { urls } from '../utils/settings'
-import styled from 'styled-components'
 import css from './Balance.module.scss'
 
 class Balance extends React.Component {
@@ -22,22 +21,28 @@ class Balance extends React.Component {
       secret: auth.secret || '',
       accounts: [],
     }
-    console.log('state:', this.state)
     this.fetcAccounts = this.fetchAccounts.bind(this)
+
+    // this.fetchAccounts()
   }
 
   componentDidMount() {
+    console.log('component did mount. state:', this.state)
     if (this.state.isAuthenticated === false) {
       navigate('/authenticate')
     }
 
-    if (this.state.isAuthenticated) this.fetchAccounts()
+    if (this.state.isAuthenticated) {
+      console.log('FEtching accounts')
+      this.fetchAccounts()
+    }
   }
 
   render() {
+    const { accounts } = this.state
     return (
       <ul className={css.list}>
-        {this.state.accounts.map(item => (
+        {accounts.map(item => (
           <li className={css.item} key={item.accountId}>
             <div className={css.itemWrapper}>
               <h3 className={css.name}>{item.name}</h3>
@@ -45,7 +50,7 @@ class Balance extends React.Component {
                 <span>kr </span>
                 {item.available.toFixed(2)}
               </div>
-              <div class={css.balanceDiv}>
+              <div className={css.balanceDiv}>
                 <span>kr </span>
                 {item.balance.toFixed(2)}
               </div>
@@ -56,7 +61,7 @@ class Balance extends React.Component {
     )
   }
 
-  getAccessToken() {
+  async getAccessToken() {
     const token = JSON.parse(localStorage.getItem('sd60:token'))
     const then = new Date(token.date)
     const now = new Date()
@@ -65,7 +70,7 @@ class Balance extends React.Component {
       return Promise.resolve(token.access_token)
     }
 
-    return fetch(urls.token, {
+    const res = await fetch(urls.token, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -74,51 +79,53 @@ class Balance extends React.Component {
         client_secret: this.state.secret,
       }),
     })
-      .then(res => {
-        if (res.ok) return res.json()
 
-        throw new Error(`Invalid response: ${res.status} ${res.statusText}`)
-      })
-      .then(json => {
-        // lets be a bit paranoid
-        if (
-          !json.hasOwnProperty('access_token') ||
-          !json.hasOwnProperty('expires_in')
-        ) {
-          console.warn(json)
-          throw new Error(
-            'Something is not right with the access_token Response.'
-          )
-        }
+    if (!res.ok) {
+      throw new Error(`Invalid response: ${res.status} ${res.statusText}`)
+    }
 
-        json.date = new Date()
-        localStorage.setItem('sd60:token', JSON.stringify(json))
+    const json = await res.json()
+    // lets be a bit paranoid
+    if (
+      !json.hasOwnProperty('access_token') ||
+      !json.hasOwnProperty('expires_in')
+    ) {
+      console.warn(json)
+      throw new Error('Something is not right with the access_token Response.')
+    }
 
-        return json.access_token
-      })
-      .catch(error => console.error(error.message))
+    json.date = new Date()
+    localStorage.setItem('sd60:token', JSON.stringify(json))
+
+    return json.access_token
   }
 
-  fetchAccounts() {
-    return this.getAccessToken()
-      .then(token =>
-        fetch(urls.balance, {
-          method: 'get',
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      )
-      .then(res => {
-        console.log('result:', res.status, res.statusText)
-        if (res.ok) return res.json()
+  /**
+   * Fetches the accounts from the server.
+   */
+  async fetchAccounts() {
+    const token = await this.getAccessToken()
+    const res = await fetch(urls.balance, {
+      method: 'get',
+      headers: { Authorization: `Bearer ${token}` },
+    })
 
-        return res.json().then(data => {
-          console.log('error text:', data)
-        })
-      })
-      .then(json => {
-        console.log(json)
-        this.setState({ accounts: json })
-      })
+    console.log('result:', res.status, res.statusText)
+    const json = await res.json()
+    if (!res.ok) {
+      console.warn('error text:', json)
+      return
+    }
+
+    console.log('Getting ready for timeout')
+    this.setState({ accounts: json })
+    setTimeout(
+      function() {
+        console.log('Got timeout')
+        this.fetchAccounts()
+      }.bind(this),
+      60000
+    )
   }
 }
 

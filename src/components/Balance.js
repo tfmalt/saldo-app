@@ -2,75 +2,7 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { urls } from '../utils/settings'
 import styled from 'styled-components'
-import { themes } from '../utils/colors'
-
-const theme = themes.teal
-
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-const Item = styled.li`
-  margin: 1.4em 0;
-  padding: 0.5em;
-  text-align: center;
-  width: 80vw;
-  height: 80vw;
-  // max-width: 520px;
-  // max-height: 520px;
-  background-color: ${theme.secondary.light};
-  // border: 1px solid ${theme.secondary.dark};
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 0px 30px rgb(255,255,255);
-`
-
-const Name = styled.h3`
-  font-size: 6vw;
-  font-weight: normal;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  margin: 12px 0 18px 0;
-  padding: 0;
-  color: ${theme.secondary.dark}; // rgba(0, 0, 0, 0.4);
-`
-
-const Available = styled.div`
-  font-size: 14vw;
-  height: 100%;
-  text-align: center;
-  display: inline-block;
-  // font-family: 'Fredericka the Great';
-  font-family: 'Sigmar One';
-  color: ${theme.primary.dark};
-  padding: 4vw 0;
-  span {
-    font-size: 0.6em;
-    // color: ${theme.primary.main};
-  }
-`
-
-const BalanceDiv = styled.div`
-  font-size: 6vw;
-  margin: 18px 0 12px 0;
-  text-align: center;
-  color: #404040;
-  font-family: 'Sigmar One';
-  color: ${theme.secondary.dark};
-
-  span {
-    font-size: 0.66em;
-    color: ${theme.secondary.dark};
-  }
-`
+import css from './Balance.module.scss'
 
 class Balance extends React.Component {
   constructor(props) {
@@ -92,8 +24,6 @@ class Balance extends React.Component {
     }
     console.log('state:', this.state)
     this.fetcAccounts = this.fetchAccounts.bind(this)
-
-    // if (auth.success) this.fetchAccounts()
   }
 
   componentDidMount() {
@@ -106,23 +36,23 @@ class Balance extends React.Component {
 
   render() {
     return (
-      <List>
+      <ul className={css.list}>
         {this.state.accounts.map(item => (
-          <Item key={item.accountId}>
-            <div>
-              <Name>{item.name}</Name>
-              <Available>
+          <li className={css.item} key={item.accountId}>
+            <div className={css.itemWrapper}>
+              <h3 className={css.name}>{item.name}</h3>
+              <div className={css.available}>
                 <span>kr </span>
                 {item.available.toFixed(2)}
-              </Available>
-              <BalanceDiv>
+              </div>
+              <div class={css.balanceDiv}>
                 <span>kr </span>
                 {item.balance.toFixed(2)}
-              </BalanceDiv>
+              </div>
             </div>
-          </Item>
+          </li>
         ))}
-      </List>
+      </ul>
     )
   }
 

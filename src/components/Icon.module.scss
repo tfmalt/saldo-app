@@ -1,0 +1,53 @@
+button[class='icon-button'] {
+  display: inline-block;
+  position: relative;
+  @media (max-width: 720px) {
+    width: 36px;
+    height: 36px;
+  }
+  @media (min-width: 720px) {
+    width: 48px;
+    height: 48px;
+  }
+  border-radius: 50%;
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: inherit;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: 0.2s ease all;
+  left: -6px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: 1s ease all;
+    outline: none;
+  }
+
+  &:focus {
+    background-color: rgba(255, 255, 255, 0.4);
+    transition: 0.2s ease all;
+    outline: none;
+  }
+
+  & > i {
+    font-family: 'Material Icons';
+    display: inline-block;
+    color: black;
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'liga';
+  }
+}

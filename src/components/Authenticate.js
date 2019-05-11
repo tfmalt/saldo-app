@@ -1,10 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
-import { themes } from '../utils/colors'
 import { urls } from '../utils/settings'
 import { navigate } from 'gatsby'
-
-const theme = themes.teal
+import Spinner from './LoadingSpinner'
+import css from './Authenticate.module.scss'
 
 class Authenticate extends React.Component {
   constructor(props) {
@@ -18,17 +16,19 @@ class Authenticate extends React.Component {
     this.state = {
       userId: auth === null ? '' : auth.userId,
       secret: auth === null ? '' : auth.secret,
+      isWaiting: false,
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
-  handleSubmit(event) {
+  async handleSubmit(event) {
     console.log(`Got a submit! ${this.state.userId}`)
     event.preventDefault()
+    this.setState({ isWaiting: true })
 
-    fetch(urls.token, {
+    const res = await fetch(urls.token, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -39,42 +39,47 @@ class Authenticate extends React.Component {
         client_secret: this.state.secret,
       }),
     })
-      .then(res => {
-        console.log('Got res:', res.status, res.statusText)
-        if (res.ok) return res.json()
 
-        return res.json().then(json => {
-          console.log('json', json)
-          throw new Error(`Got an invalid response. ${res.statusText}`)
-        })
-      })
-      .then(json => {
-        // lets be a bit paranoid
-        if (
-          !json.hasOwnProperty('access_token') ||
-          !json.hasOwnProperty('expires_in')
-        ) {
-          console.warn(json)
-          throw new Error(
-            'Something is not right with the access_token Response.'
-          )
-        }
+    console.log('Got res:', res.status, res.statusText)
 
-        json.date = new Date()
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('sd60:token', JSON.stringify(json))
-          localStorage.setItem(
-            'sd60:authenticate',
-            JSON.stringify({
-              success: true,
-              userId: this.state.userId,
-              secret: this.state.secret,
-            })
-          )
-        }
-        return navigate('/')
-      })
-      .catch(err => console.warn(err))
+    const json = await res.json()
+
+    this.setState({ isWaiting: false })
+
+    if (res.status === 400) {
+      // handle bad credentials.
+      console.log('Got wrong auth:', json)
+      return
+    }
+
+    if (res.ok) {
+      // lets be a bit paranoid
+      if (
+        !json.hasOwnProperty('access_token') ||
+        !json.hasOwnProperty('expires_in')
+      ) {
+        console.warn(json)
+        throw new Error(
+          'Something is not right with the access_token Response.'
+        )
+      }
+
+      json.date = new Date()
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('sd60:token', JSON.stringify(json))
+        localStorage.setItem(
+          'sd60:authenticate',
+          JSON.stringify({
+            success: true,
+            userId: this.state.userId,
+            secret: this.state.secret,
+          })
+        )
+      }
+      return navigate('/')
+    }
+
+    throw new Error(`Got an invalid response. ${res.statusText}`)
   }
 
   handleChange(event) {
@@ -84,21 +89,22 @@ class Authenticate extends React.Component {
   }
 
   render() {
+    const { isWaiting } = this.state
     return (
-      <Wrapper>
-        <Form onSubmit={this.handleSubmit}>
-          <TextField>
+      <div id="wrapper">
+        <form onSubmit={this.handleSubmit}>
+          <div className="textfield">
             <input
-              type="email"
+              type="text"
               required
               value={this.state.userId}
               onChange={this.handleChange}
               id="userId"
             />
-            <Underline />
+            <div id="underline" />
             <label>Bruker id</label>
-          </TextField>
-          <TextField>
+          </div>
+          <div className="textfield">
             <input
               type="text"
               required
@@ -106,94 +112,18 @@ class Authenticate extends React.Component {
               onChange={this.handleChange}
               id="secret"
             />
-            <Underline />
+            <div id="underline" />
             <label>Passord</label>
-          </TextField>
-          <Button type="submit" id="authenticate">
-            Logg inn
-          </Button>
-        </Form>
-      </Wrapper>
+          </div>
+          <button className={css.authenticate} type="submit" id="authenticate">
+            <div className={isWaiting ? css.hidden : css.visible}>Logg inn</div>
+            <div className={isWaiting ? css.visible : css.hidden}>
+              <Spinner />
+            </div>
+          </button>
+        </form>
+      </div>
     )
   }
 }
 export default Authenticate
-
-const Wrapper = styled.div`
-  min-height: 72vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`
-const Button = styled.button`
-  background-color: ${theme.secondary.dark};
-  font-family: Roboto;
-  font-weight: 500;
-  font-size: 1.2em;
-  color: black;
-  width: 100%;
-  text-align: center;
-  border: none;
-  padding: 0.8em;
-  margin-top: 6vh;
-  border-radius: 4px;
-  height: 72px;
-`
-
-const Underline = styled.div`
-  display: block;
-  position: relative;
-  width: 100%;
-  height: 2px;
-  background-color: none;
-`
-
-const TextField = styled.div`
-  margin-bottom: 3vh;
-  position: relative;
-
-  label {
-    font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 1.2em;
-    color: rgba(0, 0, 0, 0.4);
-    position: absolute;
-    left: 12px;
-    top: 1.3em;
-  }
-  input:focus {
-    outline: none;
-  }
-  input:focus ~ label,
-  input:valid ~ label {
-    top: 5px;
-    font-size: 0.9em;
-    color: ${theme.primary.main};
-    font-weight: 500;
-    transition: 0.2s ease all;
-  }
-
-  input:focus ~ div {
-    background-color: ${theme.primary.main};
-    transition: 0.2s ease all;
-  }
-
-  input {
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    height: 72px;
-    background-color: ${theme.secondary.light};
-    font-family: 'Roboto';
-    border-bottom: 1px solid ${theme.primary.main};
-    border-radius: 4px 4px 0 0;
-    display: block;
-    padding: 24px 12px 2px;
-    font-size: 1.2em;
-    width: 100%;
-  }
-`
-
-const Form = styled.form`
-  margin: 0;
-`

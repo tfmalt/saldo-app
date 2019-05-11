@@ -1,0 +1,40 @@
+@import 'main';
+
+$font-main: 'Roboto', sans-serif;
+$font-main-weight: 300;
+$font-header-weight: 700;
+
+div[id='app-bar'] {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  @media (max-width: 720px) and (orientation: portrait) {
+    height: 56px;
+    padding: 0 16px;
+  }
+  @media (max-height: 720px) and (orientation: landscape) {
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  @media (min-width: 720px) and (min-height: 720px) {
+    height: 64px;
+    padding: 0 24px;
+  }
+
+  h6[id='title'] {
+    display: inline-block;
+    font-family: $font-main;
+    font-weight: $font-header-weight;
+    font-size: 18px;
+    @media (max-width: 720px) {
+      padding: 0 16px;
+    }
+    @media (min-width: 720px) {
+      padding: 0 24px;
+    }
+    flex-grow: 1;
+  }
+}

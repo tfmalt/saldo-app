@@ -3,6 +3,7 @@ module.exports = {
     title: `Saldo`,
     description: `A simple progressive web app to see the balance of banking accounts`,
     author: `thomas@malt.no`,
+    siteUrl: `https://saldo.malt.no`,
   },
   plugins: [
     `gatsby-plugin-styled-components`,

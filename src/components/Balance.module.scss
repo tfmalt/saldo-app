@@ -1,50 +1,60 @@
 @import 'main';
 
-.list {
+.accountList {
   margin: 0;
   padding: 0;
   list-style: none;
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
 }
 
 .item {
-  margin: 8px 0px;
-  // border: 1px solid darkcyan;
+  max-width: 360px;
+  width: 100%;
+  min-width: 288px;
+  margin: 8px;
   padding: 0px;
-  // height: 30vw;
   text-align: center;
   background-color: $color-secondary-light;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.333);
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.333);
+  border-radius: 4px;
 }
 
 .name {
-  font-size: 5vw;
+  font-size: 20px;
   font-weight: 500;
   font-family: 'Roboto', sans-serif;
   margin: 0;
-  padding: 0;
-  padding-top: 16px;
-  color: rgba(0, 0, 0, 0.5);
+  padding: 8px 0px;
+  color: $color-secondary-dark;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .available {
-  font-size: 14vw;
+  @media (max-width: 360px) {
+    font-size: 48px;
+    top: -12px;
+  }
+  @media (min-width: 361px) {
+    font-size: 56px;
+    top: -16px;
+  }
+  width: 100%;
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   text-align: center;
   display: inline-block;
   position: relative;
-  top: -5vw;
   font-family: 'Sigmar One';
   color: $color-primary-main;
   padding: 0;
-  // -webkit-text-stroke: 3px $color-primary-dark;
   text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.33);
 
   span {
@@ -53,13 +63,18 @@
 }
 .itemWrapper {
   width: 100%;
-  height: 36vw;
+  @media (min-width: 361px) {
+    height: 152px;
+  }
+  @media (max-width: 360px) {
+    height: 138px;
+  }
 }
 
 .balanceDiv {
-  font-size: 5vw;
+  font-size: 24px;
   position: relative;
-  top: -9vw;
+  top: -28px;
   text-align: center;
   color: rgba(0, 0, 0, 0.66);
   font-family: 'Sigmar One';
@@ -71,10 +86,27 @@
 }
 
 .updateProgressIndicator {
-  position: absolute;
+  z-index: 5;
   display: block;
   left: 0px;
-  top: 56px;
+  @media (max-height: 720px) and (orientation: landscape) {
+    top: 48px;
+  }
+  @media (max-width: 720px) and (orientation: portrait) {
+    top: 56px;
+  }
+  @media (min-width: 720px) and (min-height: 720px) {
+    top: 64px;
+  }
+
+  @media (min-height: 600px) {
+    position: fixed;
+  }
+
+  @media (max-height: 599px) {
+    position: absolute;
+  }
+
   width: 100vw;
   height: 4px;
   background-color: $color-primary-light;
@@ -87,14 +119,14 @@
   }
 }
 
-.gotUpdate {
+.gotTimeout {
   width: 0vw;
 }
 
-.waitingForUpdate {
+.waitingForTimeout {
   width: 100vw;
   transition-property: width;
-  transition-duration: 30s;
-  transition-timing-function: linear;
-  transition-delay: 0s;
+  transition-duration: 29s;
+  transition-timing-function: ease-in;
+  transition-delay: 1s;
 }

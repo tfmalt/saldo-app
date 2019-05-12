@@ -1,15 +1,9 @@
-// import { Link } from 'gatsby'
 import PropTypes from 'prop-types'
 import React from 'react'
-// import styled from 'styled-components'
-// import { themes } from '../utils/colors'
 import Icon from './Icon'
 import AppBar from './AppBar'
 import css from './Header.module.scss'
 
-// const theme = themes.teal
-
-// <Title>{headerTitle}</Title>
 class Header extends React.Component {
   constructor(props) {
     super(props)
@@ -43,7 +37,7 @@ class Header extends React.Component {
     const { headerTitle } = this.props
     return (
       <>
-        <header>
+        <header className={css.appBarHeader}>
           <AppBar headerTitle={headerTitle} trigger={this.openMenu} />
         </header>
         <nav
@@ -51,7 +45,7 @@ class Header extends React.Component {
           onTouchStart={this.handleTouchStart}
           className={this.state.mainMenu}
         >
-          <div id="TopBar">
+          <div className={css.topBar}>
             <h6 className={css.topbarTitle}>Hovedmeny</h6>
             <Icon name="close" trigger={this.closeMenu} />
           </div>

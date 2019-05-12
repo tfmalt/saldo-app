@@ -11,7 +11,7 @@ import styled from 'styled-components'
 import Header from '../components/Header'
 import { version } from '../../package'
 import './layout.css'
-import './Layout.module.scss'
+import css from './Layout.module.scss'
 
 const Version = styled.span`
   font-weight: 700;
@@ -21,10 +21,10 @@ class Layout extends React.Component {
   render() {
     const { headerTitle, children } = this.props
     return (
-      <main>
+      <main class={css.layoutWrapper}>
         <Header headerTitle={headerTitle} />
         <section>{children}</section>
-        <footer>
+        <footer className={css.layoutFooter}>
           <div>
             Version <Version>{version}</Version> by Thomas Malt ©{' '}
             {new Date().getFullYear()}

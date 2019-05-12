@@ -4,7 +4,7 @@ $font-main: 'Roboto', sans-serif;
 $font-main-weight: 300;
 $font-header-weight: 700;
 
-div[id='app-bar'] {
+.appBar {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -24,7 +24,7 @@ div[id='app-bar'] {
     padding: 0 24px;
   }
 
-  h6[id='title'] {
+  .headerTitle {
     display: inline-block;
     font-family: $font-main;
     font-weight: $font-header-weight;

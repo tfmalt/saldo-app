@@ -21,7 +21,7 @@ class Balance extends React.Component {
       secret: auth.secret || '',
       accounts: [],
       progressBar: {
-        class: css.waitingForUpdate,
+        class: css.gotTimeout,
       },
     }
     this.fetcAccounts = this.fetchAccounts.bind(this)
@@ -34,8 +34,9 @@ class Balance extends React.Component {
     }
 
     if (this.state.isAuthenticated) {
-      console.log('FEtching accounts')
+      console.log('Fetching accounts')
       this.fetchAccounts()
+      this.setState({ progressBar: { class: css.gotTimeout } })
     }
   }
 
@@ -46,7 +47,7 @@ class Balance extends React.Component {
         <div className={css.updateProgressIndicator}>
           <div className={progressBar.class} />
         </div>
-        <ul className={css.list}>
+        <ul className={css.accountList}>
           {accounts.map(item => (
             <li className={css.item} key={item.accountId}>
               <div className={css.itemWrapper}>
@@ -126,17 +127,17 @@ class Balance extends React.Component {
       return
     }
 
-    console.log('Getting ready for timeout')
+    console.log('Waiting for timeout')
     this.setState({
       accounts: json,
-      progressBar: { class: css.waitingForUpdate },
+      progressBar: { class: css.waitingForTimeout },
     })
 
     setTimeout(
       function() {
         console.log('Got timeout')
         this.setState({
-          progressBar: { class: css.gotUpdate },
+          progressBar: { class: css.gotTimeout },
         })
         this.fetchAccounts()
       }.bind(this),

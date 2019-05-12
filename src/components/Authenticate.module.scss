@@ -1,6 +1,6 @@
 @import 'main';
 
-div[id='wrapper'] {
+#wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,6 +21,8 @@ div[id='wrapper'] {
   border-radius: 4px;
   height: 56px;
   transition: 0.6s ease all;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 
   &:active {
     background-color: $color-primary-main;
@@ -48,7 +50,7 @@ form {
   margin: 0;
 }
 
-div[class='textfield'] {
+.textfield {
   margin-bottom: 16px;
   position: relative;
 

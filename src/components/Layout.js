@@ -21,7 +21,7 @@ class Layout extends React.Component {
   render() {
     const { headerTitle, children } = this.props
     return (
-      <main class={css.layoutWrapper}>
+      <main className={css.layoutWrapper}>
         <Header headerTitle={headerTitle} />
         <section>{children}</section>
         <footer className={css.layoutFooter}>

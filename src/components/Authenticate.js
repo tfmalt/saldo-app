@@ -3,19 +3,22 @@ import { urls } from '../utils/settings'
 import { navigate } from 'gatsby'
 import Spinner from './LoadingSpinner'
 import css from './Authenticate.module.scss'
+import localforage from 'localforage'
 
 class Authenticate extends React.Component {
   constructor(props) {
     super(props)
 
-    const auth =
-      typeof window === 'undefined'
-        ? { userId: '', secret: '' }
-        : JSON.parse(localStorage.getItem('sd60:authenticate'))
+    localforage.config({ name: 'saldo' })
 
     this.state = {
-      userId: auth === null ? '' : auth.userId,
-      secret: auth === null ? '' : auth.secret,
+      userId: '',
+      secret: '',
+      credentials: {
+        userId: '',
+        secret: '',
+        success: false,
+      },
       isWaiting: false,
     }
 
@@ -23,77 +26,21 @@ class Authenticate extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  async handleSubmit(event) {
-    console.log(`Got a submit! ${this.state.userId}`)
-    event.preventDefault()
-    this.setState({ isWaiting: true })
-
-    const res = await fetch(urls.token, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        grant_type: 'client_credentials',
-        client_id: this.state.userId,
-        client_secret: this.state.secret,
-      }),
-    })
-
-    console.log('Got res:', res.status, res.statusText)
-
-    const json = await res.json()
-
-    this.setState({ isWaiting: false })
-
-    if (res.status === 400) {
-      // handle bad credentials.
-      console.log('Got wrong auth:', json)
-      return
-    }
-
-    if (res.ok) {
-      // lets be a bit paranoid
-      if (
-        !json.hasOwnProperty('access_token') ||
-        !json.hasOwnProperty('expires_in')
-      ) {
-        console.warn(json)
-        throw new Error(
-          'Something is not right with the access_token Response.'
-        )
-      }
-
-      json.date = new Date()
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('sd60:token', JSON.stringify(json))
-        localStorage.setItem(
-          'sd60:authenticate',
-          JSON.stringify({
-            success: true,
-            userId: this.state.userId,
-            secret: this.state.secret,
-          })
-        )
-      }
+  async componentDidMount() {
+    console.log('Authenticate did mount.')
+    const credentials = await localforage.getItem('credentials')
+    console.log('got credentials:', credentials)
+    if (credentials !== null && credentials.success === true) {
       return navigate('/')
     }
-
-    throw new Error(`Got an invalid response. ${res.statusText}`)
-  }
-
-  handleChange(event) {
-    let newState = {}
-    newState[event.target.id] = event.target.value
-    this.setState(newState)
   }
 
   render() {
     const { isWaiting } = this.state
     return (
-      <div id="wrapper">
+      <div id={css.wrapper}>
         <form onSubmit={this.handleSubmit}>
-          <div className="textfield">
+          <div className={css.textfield}>
             <input
               type="text"
               required
@@ -104,7 +51,7 @@ class Authenticate extends React.Component {
             <div id="underline" />
             <label>Bruker id</label>
           </div>
-          <div className="textfield">
+          <div className={css.textfield}>
             <input
               type="text"
               required
@@ -124,6 +71,89 @@ class Authenticate extends React.Component {
         </form>
       </div>
     )
+  }
+
+  async handleSubmit(event) {
+    // console.log(`Got a submit! ${this.state.userId}`)
+    event.preventDefault()
+    this.setState({ isWaiting: true })
+
+    let { credentials } = this.state
+
+    credentials.userId = this.state.userId
+    credentials.secret = this.state.secret
+
+    const result = await this.verifyCredentials(credentials)
+
+    this.setState({ isWaiting: false })
+
+    console.log('got result:', result)
+
+    if (result.success === true) {
+      return navigate('/')
+    }
+    // otherwise handle unsuccess here.
+  }
+
+  handleChange(event) {
+    let newState = {}
+
+    newState[event.target.id] = event.target.value
+
+    this.setState(newState)
+  }
+
+  async verifyCredentials(credentials) {
+    console.log('Verifying credentials')
+
+    const res = await fetch(urls.token, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        grant_type: 'client_credentials',
+        client_id: credentials.userId,
+        client_secret: credentials.secret,
+      }),
+    })
+
+    console.log('Got result:', res.status, res.statusText)
+
+    const json = await res.json()
+
+    if (res.status === 400) {
+      // handle bad credentials.
+      console.log('Got wrong auth:', json)
+      credentials.success = false
+      return credentials
+    }
+
+    if (!res.ok) {
+      throw new Error('Somehthing unexpected went wrong with authentication.')
+    }
+
+    if (res.ok) {
+      // lets be a bit paranoid
+      if (
+        !json.hasOwnProperty('access_token') ||
+        !json.hasOwnProperty('expires_in')
+      ) {
+        console.warn(json)
+        throw new Error(
+          'Something is not right with the access_token Response.'
+        )
+      }
+
+      json.date = new Date()
+      credentials.success = true
+
+      localforage.setItem('access_token', json)
+      localforage.setItem('credentials', credentials)
+
+      return credentials
+    }
   }
 }
 export default Authenticate

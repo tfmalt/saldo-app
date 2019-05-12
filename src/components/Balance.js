@@ -2,23 +2,18 @@ import React from 'react'
 import { navigate } from 'gatsby'
 import { urls } from '../utils/settings'
 import css from './Balance.module.scss'
+import localforage from 'localforage'
 
 class Balance extends React.Component {
   constructor(props) {
     super(props)
-    let auth =
-      typeof window === 'undefined'
-        ? { success: false, userId: '', secret: '' }
-        : JSON.parse(localStorage.getItem('sd60:authenticate'))
 
-    if (auth === null) {
-      auth = { success: false, userId: '', secret: '' }
-    }
+    localforage.config({ name: 'saldo' })
 
     this.state = {
-      isAuthenticated: auth.success || false,
-      userId: auth.userId || '',
-      secret: auth.secret || '',
+      isAuthenticated: false, // auth.success || false,
+      userId: '', // auth.userId || '',
+      secret: '', // auth.secret || '',
       accounts: [],
       progressBar: {
         class: css.gotTimeout,
@@ -27,17 +22,21 @@ class Balance extends React.Component {
     this.fetcAccounts = this.fetchAccounts.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log('component did mount. state:', this.state)
-    if (this.state.isAuthenticated === false) {
-      navigate('/authenticate')
+    const credentials = await localforage.getItem('credentials')
+    console.log('credentials:', credentials)
+    if (credentials === null || credentials.success === false) {
+      this.state.isAuthenticated = false
+      return navigate('/authenticate')
     }
 
-    if (this.state.isAuthenticated) {
-      console.log('Fetching accounts')
-      this.fetchAccounts()
-      this.setState({ progressBar: { class: css.gotTimeout } })
+    if (credentials.success === true) {
+      this.state.isAuthenticated = true
     }
+
+    console.log('Fetching accounts')
+    this.fetchAccounts()
   }
 
   render() {
@@ -72,12 +71,13 @@ class Balance extends React.Component {
    * helper to fetch the access token for the api backend
    */
   async getAccessToken() {
-    const token = JSON.parse(localStorage.getItem('sd60:token'))
+    const token = await localforage.getItem('access_token')
     const then = new Date(token.date)
     const now = new Date()
 
     if (then.getTime() + (token.expires_in - 300) * 1000 > now.getTime()) {
-      return Promise.resolve(token.access_token)
+      console.log('Current token still valid')
+      return token.access_token
     }
 
     const res = await fetch(urls.token, {
@@ -105,7 +105,7 @@ class Balance extends React.Component {
     }
 
     json.date = new Date()
-    localStorage.setItem('sd60:token', JSON.stringify(json))
+    localforage.setItem('access_token', json)
 
     return json.access_token
   }

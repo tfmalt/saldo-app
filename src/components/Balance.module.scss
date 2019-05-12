@@ -69,3 +69,32 @@
     font-size: 0.66em;
   }
 }
+
+.updateProgressIndicator {
+  position: absolute;
+  display: block;
+  left: 0px;
+  top: 56px;
+  width: 100vw;
+  height: 4px;
+  background-color: $color-primary-light;
+  & > div {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    height: 4px;
+    background-color: $color-primary-dark;
+  }
+}
+
+.gotUpdate {
+  width: 0vw;
+}
+
+.waitingForUpdate {
+  width: 100vw;
+  transition-property: width;
+  transition-duration: 30s;
+  transition-timing-function: linear;
+  transition-delay: 0s;
+}

@@ -23,9 +23,8 @@ class Balance extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('component did mount. state:', this.state)
+    console.log('component did mount.')
     const credentials = await localforage.getItem('credentials')
-    console.log('credentials:', credentials)
     if (credentials === null || credentials.success === false) {
       this.state.isAuthenticated = false
       return navigate('/authenticate')

@@ -29,10 +29,12 @@ class Authenticate extends React.Component {
   async componentDidMount() {
     console.log('Authenticate did mount.')
     const credentials = await localforage.getItem('credentials')
-    console.log('got credentials:', credentials)
     if (credentials !== null && credentials.success === true) {
+      console.log('User Authenticated.')
       return navigate('/')
     }
+
+    console.log('User not yet authenticated.')
   }
 
   render() {

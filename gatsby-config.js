@@ -31,7 +31,7 @@ module.exports = {
         short_name: `saldo`,
         start_url: `/`,
         background_color: `#efebe9`,
-        theme_color: `#4bb5ab`,
+        theme_color: `#ec407a`,
         display: `standalone`,
         icon: `src/images/saldo-icon.png`,
       },

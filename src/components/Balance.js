@@ -3,6 +3,9 @@ import { navigate } from 'gatsby'
 import { urls } from '../utils/settings'
 import css from './Balance.module.scss'
 import localforage from 'localforage'
+import PrettyKr from './PrettyKr'
+
+let timer = null
 
 class Balance extends React.Component {
   constructor(props) {
@@ -38,6 +41,11 @@ class Balance extends React.Component {
     this.fetchAccounts()
   }
 
+  componentWillUnmount() {
+    console.log('Balance will unmount.')
+    clearTimeout(timer)
+  }
+
   render() {
     const { accounts, progressBar } = this.state
     return (
@@ -46,21 +54,25 @@ class Balance extends React.Component {
           <div className={progressBar.class} />
         </div>
         <ul className={css.accountList}>
-          {accounts.map(item => (
-            <li className={css.item} key={item.accountId}>
-              <div className={css.itemWrapper}>
-                <h3 className={css.name}>{item.name}</h3>
-                <div className={css.available}>
-                  <span>kr </span>
-                  {item.available.toFixed(2)}
+          {accounts.map(item => {
+            return (
+              <li className={css.item} key={item.accountId}>
+                <div className={css.itemWrapper}>
+                  <h3 className={css.name}>{item.name}</h3>
+                  <div className={css.available}>
+                    <PrettyKr
+                      currency="kr"
+                      amount={item.available}
+                      locale="nb"
+                    />
+                  </div>
+                  <div className={css.balanceDiv}>
+                    <PrettyKr currency="kr" amount={item.balance} locale="nb" />
+                  </div>
                 </div>
-                <div className={css.balanceDiv}>
-                  <span>kr </span>
-                  {item.balance.toFixed(2)}
-                </div>
-              </div>
-            </li>
-          ))}
+              </li>
+            )
+          })}
         </ul>
       </>
     )
@@ -71,23 +83,35 @@ class Balance extends React.Component {
    */
   async getAccessToken() {
     const token = await localforage.getItem('access_token')
+
+    // if the token is null here we are logged out.
+    if (token === null) return
+
     const then = new Date(token.date)
     const now = new Date()
-
-    if (then.getTime() + (token.expires_in - 300) * 1000 > now.getTime()) {
-      console.log('Current token still valid')
+    const eol = then.getTime() + (token.expires_in - 300) * 1000
+    const ttl = eol - now.getTime()
+    if (ttl > 0) {
+      console.log(`Access token valid for ${Math.round(ttl / 1000)} seconds.`)
       return token.access_token
     }
 
+    console.log('Access token stale.')
+
+    const credentials = await localforage.getItem('credentials')
     const res = await fetch(urls.token, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         grant_type: 'client_credentials',
-        client_id: this.state.userId,
-        client_secret: this.state.secret,
+        client_id: credentials.userId,
+        client_secret: credentials.secret,
       }),
     })
+
+    if (res.status === 400) {
+      throw new Error(`Invalid credentials ${res.status} ${res.statusText}`)
+    }
 
     if (!res.ok) {
       throw new Error(`Invalid response: ${res.status} ${res.statusText}`)
@@ -114,6 +138,7 @@ class Balance extends React.Component {
    */
   async fetchAccounts() {
     const token = await this.getAccessToken()
+    if (token === null) return
     const res = await fetch(urls.balance, {
       method: 'get',
       headers: { Authorization: `Bearer ${token}` },
@@ -132,7 +157,7 @@ class Balance extends React.Component {
       progressBar: { class: css.waitingForTimeout },
     })
 
-    setTimeout(
+    timer = setTimeout(
       function() {
         console.log('Got timeout')
         this.setState({

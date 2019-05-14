@@ -1,0 +1,37 @@
+@import 'main';
+
+.footer {
+  font-family: 'Roboto', sans-serif;
+  background-color: $color-primary-main;
+  padding: 8px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.03em;
+  line-height: 1.5em;
+  font-size: 0.9em;
+
+  @media (min-height: 600px) {
+    position: absolute;
+    position: fixed;
+    bottom: 0px;
+    box-shadow: 0px -1px 6px $color-shadow;
+  }
+  z-index: 2;
+  width: 100%;
+  height: 72px;
+  // box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.version {
+  font-weight: 700;
+}
+
+.builtWith {
+  font-size: 0.9em;
+
+  a {
+    text-decoration: none;
+    font-weight: 700;
+    color: inherit;
+  }
+}

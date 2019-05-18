@@ -1,16 +1,19 @@
 class EventDispatch extends EventTarget {
   constructor() {
     super()
-    console.log('Inside event dispatch')
+    this.addEventListener('authenticationFailed', this.handleAuthFailed)
+    this.addEventListener('gotBalanceOk', this.handleGotBalanceOk)
   }
 
   handleAuthFailed(event) {
     console.log('Got auth failed event:', event)
   }
+
+  handleGotBalanceOk(event) {
+    console.log('Got balance ok', event)
+  }
 }
 
 const myDispatch = new EventDispatch()
-
-myDispatch.addEventListener('authenticationFailed', myDispatch.handleAuthFailed)
 
 export default myDispatch

@@ -126,9 +126,10 @@
 .waitingForTimeout {
   width: 100vw;
   transition-property: width;
-  transition-duration: 29s;
+  transition-duration: 9s;
   // transition-timing-function: ease-in-out;
   // transition-timing-function: cubic-bezier(0.025, 0.69, 1, 0.29);
-  transition-timing-function: cubic-bezier(0.06, 0.48, 0.93, 0.48);
+  // transition-timing-function: cubic-bezier(0.06, 0.48, 0.93, 0.48);
+  transition-timing-function: linear;
   transition-delay: 1s;
 }

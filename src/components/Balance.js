@@ -4,6 +4,7 @@ import { urls } from '../utils/settings'
 import css from './Balance.module.scss'
 import localforage from 'localforage'
 import PrettyKr from './PrettyKr'
+import gcd from '../EventDispatch'
 
 let timer = null
 
@@ -151,6 +152,13 @@ class Balance extends React.Component {
       return
     }
 
+    gcd.dispatchEvent(
+      new CustomEvent('gotBalanceOk', {
+        status: res.status,
+        statusText: res.statusText,
+      })
+    )
+
     console.log('Waiting for timeout')
     this.setState({
       accounts: json,
@@ -165,7 +173,7 @@ class Balance extends React.Component {
         })
         this.fetchAccounts()
       }.bind(this),
-      30000
+      10000
     )
   }
 }

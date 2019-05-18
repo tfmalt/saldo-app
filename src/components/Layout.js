@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SnackBar from '../components/SnackBar'
+import Blip from '../components/Blip'
 import './layout.css'
 import css from './Layout.module.scss'
 
@@ -19,6 +20,7 @@ class Layout extends React.Component {
         <section>{children}</section>
         <Footer />
         <SnackBar timeout="6000" />
+        <Blip />
       </main>
     )
   }

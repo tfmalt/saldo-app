@@ -1,0 +1,36 @@
+@import 'main';
+
+.snackbar {
+  width: calc(100vw - 32px);
+  position: absolute;
+  height: 72px;
+  border-radius: 4px;
+  color: white;
+  font-family: 'Roboto';
+  padding: 8px;
+  margin: 16px;
+
+  background-color: rgba(0, 0, 0, 0.8);
+  line-height: 1.2em;
+
+  h6 {
+    font-size: 1em;
+    font-weight: bold;
+    color: $color-primary-light;
+  }
+
+  p {
+    padding-top: 4px;
+    font-size: 0.9em;
+  }
+}
+
+.hide {
+  bottom: -72px;
+  transition: bottom 1s ease-in-out;
+}
+
+.show {
+  bottom: 72px;
+  transition: bottom 0.6s ease-in-out;
+}

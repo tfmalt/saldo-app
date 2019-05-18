@@ -1,14 +1,12 @@
 /**
- * Layout component that queries for data
- * with Gatsby's StaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/static-query/
+ * Central layout component for all things layout.
  */
 
 import React from 'react'
 import PropTypes from 'prop-types'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SnackBar from '../components/SnackBar'
 import './layout.css'
 import css from './Layout.module.scss'
 
@@ -20,6 +18,7 @@ class Layout extends React.Component {
         <Header headerTitle={headerTitle} />
         <section>{children}</section>
         <Footer />
+        <SnackBar timeout="6000" />
       </main>
     )
   }

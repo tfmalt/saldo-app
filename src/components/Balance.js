@@ -22,7 +22,7 @@ class Balance extends React.Component {
         class: css.gotTimeout,
       },
     }
-    this.fetcAccounts = this.fetchAccounts.bind(this)
+    this.fetchAccounts = this.fetchAccounts.bind(this)
   }
 
   async componentDidMount() {

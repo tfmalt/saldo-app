@@ -4,6 +4,7 @@ import { navigate } from 'gatsby'
 import Spinner from './LoadingSpinner'
 import css from './Authenticate.module.scss'
 import localforage from 'localforage'
+import dispatch from '../EventDispatch'
 
 class Authenticate extends React.Component {
   constructor(props) {
@@ -123,12 +124,19 @@ class Authenticate extends React.Component {
 
     console.log('Got result:', res.status, res.statusText)
 
-    const json = await res.json()
+    let json = await res.json()
 
     if (res.status === 400) {
       // handle bad credentials.
       console.log('Got wrong auth:', json)
+      json.status = res.status
       credentials.success = false
+      json.credentials = credentials
+      json.title = 'Feil ved innlogging'
+      json.message = 'Bruker-id eller passord er feil. Prøv på nytt.'
+      dispatch.dispatchEvent(
+        new CustomEvent('authenticationFailed', { detail: json })
+      )
       return credentials
     }
 

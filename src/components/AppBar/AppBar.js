@@ -1,5 +1,5 @@
 import React from 'react'
-import Icon from './Icon'
+import Icon from '../Icon'
 import css from './AppBar.module.scss'
 
 const AppBar = ({ headerTitle, trigger }) => {

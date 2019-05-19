@@ -4,10 +4,10 @@
 
 import React from 'react'
 import PropTypes from 'prop-types'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SnackBar from '../components/SnackBar'
-import Blip from '../components/Blip'
+import Header from '../Header'
+import Footer from '../Footer'
+import SnackBar from '../SnackBar/SnackBar'
+import Blip from '../Blip/Blip'
 import './layout.css'
 import css from './Layout.module.scss'
 

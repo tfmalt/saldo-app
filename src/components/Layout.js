@@ -19,7 +19,7 @@ class Layout extends React.Component {
         <Header headerTitle={headerTitle} />
         <section>{children}</section>
         <Footer />
-        <SnackBar timeout="6000" />
+        <SnackBar timeout="6000" position="bottom right" />
         <Blip />
       </main>
     )

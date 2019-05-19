@@ -1,10 +1,10 @@
 import React from 'react'
-import { urls } from '../utils/settings'
+import { urls } from '../../utils/settings'
 import { navigate } from 'gatsby'
-import Spinner from './LoadingSpinner'
-import css from './Authenticate.module.scss'
+import Spinner from '../LoadingSpinner'
 import localforage from 'localforage'
-import dispatch from '../EventDispatch'
+import dispatch from '../../EventDispatch'
+import css from './Authenticate.module.scss'
 
 class Authenticate extends React.Component {
   constructor(props) {

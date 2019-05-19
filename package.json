@@ -2,10 +2,11 @@
   "name": "sd60-saldo-app",
   "private": true,
   "description": "A progressive web app to see the balance of your banking account",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "author": "Thomas Malt <thomas@malt.no>",
   "dependencies": {
     "babel-plugin-styled-components": "^1.10.0",
+    "event-target-shim": "^5.0.1",
     "gatsby": "^2.4.2",
     "gatsby-image": "^2.0.41",
     "gatsby-plugin-google-fonts": "^0.0.4",

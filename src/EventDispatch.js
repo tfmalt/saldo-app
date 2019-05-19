@@ -1,3 +1,5 @@
+import EventTarget from 'event-target-shim'
+
 class EventDispatch extends EventTarget {
   constructor() {
     super()

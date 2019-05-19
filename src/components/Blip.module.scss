@@ -1,5 +1,10 @@
 #blipBox {
-  position: absolute;
+  @media (min-height: 600px) {
+    position: fixed;
+  }
+  @media (max-height: 599px) {
+    position: absolute;
+  }
   // background-color: rgba(0, 176, 96, 0.6);
   top: 72px;
   right: 12px;

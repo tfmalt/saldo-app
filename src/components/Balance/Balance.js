@@ -1,10 +1,10 @@
 import React from 'react'
 import { navigate } from 'gatsby'
-import { urls } from '../utils/settings'
+import { urls } from '../../utils/settings'
 import css from './Balance.module.scss'
 import localforage from 'localforage'
-import PrettyKr from './PrettyKr'
-import gcd from '../EventDispatch'
+import PrettyKr from '../PrettyKr'
+import gcd from '../../EventDispatch'
 
 let timer = null
 

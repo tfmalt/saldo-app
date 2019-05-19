@@ -1,5 +1,5 @@
 import React from 'react'
-import gcd from '../EventDispatch'
+import gcd from '../../EventDispatch'
 import css from './SnackBar.module.scss'
 
 class SnackBar extends React.Component {

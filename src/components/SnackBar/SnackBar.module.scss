@@ -1,8 +1,13 @@
-@import 'main';
+@import '../main';
 
 .snackbar {
+  @media (min-height: 600px) {
+    position: fixed;
+  }
+  @media (max-height: 599px) {
+    position: absolute;
+  }
   width: calc(100vw - 32px);
-  position: absolute;
   height: 72px;
   border-radius: 4px;
   color: white;
@@ -10,7 +15,7 @@
   padding: 8px;
   margin: 0px 16px;
 
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.66);
   line-height: 1.2em;
 
   h6 {
